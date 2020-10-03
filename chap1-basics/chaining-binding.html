@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <title></title>
+        <script src='../d3/d3.min.js'> </script>
+        <style>
+            #borderdiv{
+                width: 200px;
+                height: 50px;
+                border: 1px solid gray;
+            }
+        </style>
+    </head>
+    <body>
+        <!-- <div id='borderdiv'></div> -->
+        <script>
+            var someData = ['apple', 'orange', 'banana', 'filler'];
+            d3.selectAll('div')
+                .data(someData)
+                .enter()
+                .append('div')
+                .html('Wow')
+                .append('span')
+                .html('Even more wow')
+                .style('font-weight','900');
+
+            someNumbers = [17, 81, 9, 500, 40, 150];
+            bigNumbers = someNumbers.filter(function(d){return d>40});
+            d3.select('body')
+                .selectAll('div')
+                .data(bigNumbers)
+                .enter()
+                .append('div')
+                .html(function(d){return d})
+                .style('background',function(d){return d})
+                .attr('cx', function(d,i){return i*100});
+
+            someData.filter(d => {d.length<10});
+        </script>
+    </body>
+</html>

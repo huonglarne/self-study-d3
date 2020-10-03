@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <title></title>
+        <script src='../d3/d3.min.js'></script>
+        <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js'>
+
+        </script>
+    </head>
+    <body>
+        <script>
+            // measure range of data
+            var min, max, mean;
+            d3.csv('worldcities.csv').then(data => {
+                range = d3.extent(data, el => +el.population);
+                mean = d3.mean(data, el => +el.population);
+            });
+
+            //data binding
+
+            // d3.csv('worldcities.csv').then((error, data) => {
+            //     if (error){
+            //         console.error(error);
+            //     } else{
+            //         dataViz(data);
+            //     }
+            // });
+
+            function dataViz(incomingData){
+                d3.select('body').selectAll('div.cities')
+                    .data(incomingData)
+                    .enter()
+                    .append('div')
+                    .attr('class','cities')
+                    .html(d => d.city);
+            }
+
+            d3.csv('worldcities.csv').then(data => dataViz(data));
+
+        </script>
+    </body>
+</html>

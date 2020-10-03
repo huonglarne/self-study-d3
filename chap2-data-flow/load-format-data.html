@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <title></title>
+        <script src='../d3/d3.min.js'></script>
+    </head>
+    <body>
+        <script>
+            // load data
+            d3.csv('worldcities.csv', data => console.log(data));
+            d3.json('tweets.json', data => console.log(data));
+
+            // scaling
+            var newRamp = d3.scaleLinear().domain([500000,13000000])
+                .range([0,500]);
+            newRamp(10000);
+            newRamp.invert(313);
+
+            var colorRamp = d3.scaleLinear().domain([500000,13000000])
+                .range(['blue','red']);
+            colorRamp(10000);
+            colorRamp.invert('#ad0052');
+
+            // binning - categorizing
+            var sampleArray = [423, 1234, 66 ,424, 58, 10, 900, 44, 1];
+            var qScale = d3.scaleQuantile()
+                .domain(sampleArray).range(['small','medium','large']);
+
+            // nesting
+            d3.json('tweets.json', data => {
+                var tweetData = data.tweets;
+                var nestedTweets = d3.nest()
+                    .key(d => d.user)
+                    .entries(tweetData);
+                console.log(nestedTweets);
+                console.log(1);
+            });
+
+        </script>
+    </body>
+</html>

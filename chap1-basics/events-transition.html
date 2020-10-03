@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <title></title>
+        <script src='../d3/d3.min.js'> </script>
+    </head>
+    <body>
+        <div id='container'>
+            <svg width=500 height=500 style='border:1px lightgray solid'>
+
+            </svg>
+        </div>
+        <script>
+            d3.select('svg')
+                .append('line')
+                .attr('x1',20)
+                .attr('y1',20)
+                .attr('x2',400)
+                .attr('y2',400)
+                .style('stroke','black')
+                .style('stroke-width','2px');
+            d3.select('svg')
+                .append('text')
+                .attr('id','text-a')
+                .attr('x',20)
+                .attr('y',20)
+                .text('hello')
+                .style('opacity',0);
+            d3.select('svg')
+                .append('circle')
+                .attr('r',20)
+                .attr('cx',20)
+                .attr('cy',20)
+                .style('fill','red');
+            d3.select("svg")
+                .append("circle")
+                .attr("r", 100)
+                .attr("cx",400)
+                .attr("cy",400)
+                .style("fill","lightblue");
+            d3.select("svg")
+                .append("text")
+                .attr('id','text-b')
+                .attr("x",400)
+                .attr("y",400)
+                .style('opacity',0)
+                .text("WORLD");
+                
+            d3.select('#text-a')
+                .transition()
+                .delay(1000)
+                .duration(1000)
+                .style('opacity',1)
+                .attr('y',250);
+            d3.select('#text-b')
+                .transition()
+                .delay(3000)
+                .duration(2000)
+                .style('opacity',1)
+                .attr('y',250);
+        </script>
+    </body>
+</html>
