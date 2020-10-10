@@ -9,6 +9,9 @@
         </script>
     </head>
     <body>
+        <svg>
+
+        </svg>
         <script>
             // measure range of data
             var min, max, mean;
@@ -29,14 +32,36 @@
 
             function dataViz(incomingData){
                 d3.select('body').selectAll('div.cities')
-                    .data(incomingData)
+                    .data(incomingData, d => JSON.stringify(d))
                     .enter()
                     .append('div')
                     .attr('class','cities')
                     .html(d => d.city);
+
+                var filteredData = incomingData.filter(d => d>100000);
+                d3.select('body').selectAll('div.cities')
+                    .data(filteredData, d => JSON.stringify(d))
+                    .exit()
+                    .remove();
             }
 
             d3.csv('worldcities.csv').then(data => dataViz(data));
+
+            //simple bar chart
+
+            var someArray = [15, 50, 22, 8, 100, 10];
+            range = d3.extent(someArray, d => d);
+            d3.select('svg')
+                .selectAll('rect')
+                .data(someArray)
+                .enter()
+                .append('rect')
+                .attr('width',10)
+                .attr('height', d => d)
+                .style('opacity', 0.25)
+                .attr('x', (d,i) => i*10)
+                .attr('y', d => range[1]-d);
+
 
         </script>
     </body>

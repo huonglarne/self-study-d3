@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <title></title>
+        <script src='../d3/d3.min.js'></script>
+        <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js'></script>
+    </head>
+    <body>
+        <svg width='800' height='800'>
+
+        </svg>
+        <script>
+            function dataViz(incomingData){
+                incomingData.forEach((d, i) => {
+                    d.fav = d.favorites.length;
+                    d.share = d.retweets.length;
+                    d.impact = d.fav+d.share;
+                    d.tweetTime = new Date(d.timestamp);
+                })
+
+                var maxFav = d3.max(incomingData, d => d.fav);
+                var maxShare = d3.max(incomingData, d => d.share);
+                var maxImpact = d3.max(incomingData, d => d.impact);
+                var startEnd = d3.extent(incomingData, d => d.tweetTime);
+                var timeRamp = d3.scaleLinear().domain(startEnd).range([20, 500]);
+                var yScale = d3.scaleLinear().domain([0, maxFav]).range([0, 500]);
+                var radiusScale = d3.scaleLinear().domain([0, maxShare]).range([1,20]);
+                var colorScale = d3.scaleLinear().domain([0, maxImpact]).range(['red', 'violet']);
+
+                d3.select('svg')
+                    .selectAll('circle.tweet')
+                    .data(incomingData)
+                    .enter()
+                    .append('circle')
+                    .attr('class', 'tweet')
+                    .attr('r', d => radiusScale(d.share))
+                    .attr('cx', d => timeRamp(d.tweetTime))
+                    .attr('cy', d => yScale(maxFav)-yScale(d.fav))
+                    .style('stroke', d => colorScale(d.impact))
+                    .style('fill', d => colorScale(d.impact))
+                    ;
+            };
+
+            $(document).ready(function(){
+                d3.json('tweets.json').then(d => dataViz(d.tweets))
+            });
+        </script>
+    </body>
+</html>

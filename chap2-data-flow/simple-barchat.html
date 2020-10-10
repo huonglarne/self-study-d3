@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <title></title>
+        <script src='../d3/d3.min.js'></script>
+        <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js'></script>
+    </head>
+    <body>
+        <svg width='10000' height='2000'>
+
+        </svg>
+        <script>
+            function dataViz(incomingData){
+                var range = d3.extent(incomingData, el => +el.population);
+
+                var ramp = d3.scaleLinear()
+                    .domain(range)
+                    .range([0, 1000]);
+
+                d3.select('svg')
+                    .selectAll('rect.population')
+                    .data(incomingData)
+                    .enter()
+                    .append('rect')
+                    .attr('class','population')
+                    .attr('width', 10)
+                    .attr('height', d=>ramp(d.population))
+                    .style('opacity', 1)
+                    .style('fill', 'orange')
+                    .style('stroke', 'white')
+                    .attr('x', (d,i)=>i*10)
+                    .attr('y', d=>ramp(range[1])-ramp(d.population));
+
+                return range;
+            }
+
+            $(document).ready(function(){
+                    d3.csv('worldcities.csv').then(data => dataViz(data));
+            });
+        </script>
+    </body>
+</html>
